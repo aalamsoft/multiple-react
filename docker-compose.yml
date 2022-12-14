@@ -1,0 +1,32 @@
+version: '3.8'
+services:
+  nginx:
+    image: nginx
+    ports:
+      - "${NGINX_PORT}:80"
+    restart: always
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./nginx/site.conf:/etc/nginx/conf.d/default.conf
+      - member:/var/www/member
+      - employee:/var/www/employee
+
+  member:
+    image: member
+    build:
+      context: member
+      dockerfile: Dockerfile
+    volumes:
+      - member:/app/build
+
+  employee:
+    image: employee
+    build:
+      context: employee
+      dockerfile: Dockerfile
+    volumes:
+      - employee:/app/build
+
+volumes:
+  member:
+  employee:
